@@ -11,6 +11,10 @@ AddEventHandler('onResourceStop', function(resourceName)
         if aduty then
             toggleAduty()
         end
+
+        if vanish then
+            toggleVanish()
+        end
     end
 end)
 
@@ -23,6 +27,10 @@ end
 RegisterKeyMapping('aduty', 'Toggle aduty', 'keyboard', '')
 RegisterCommand('aduty', function(source, args, Rawcommand)
     toggleAduty()
+
+    if vanish then
+        toggleVanish()
+    end
 
     if noclip then
         toggleNoclip()
@@ -249,12 +257,16 @@ function toggleNoclip()
 end
 
 function toggleVanish()
-    vanish = not vanish
-    local playerPed = PlayerPedId() 
+    if aduty then
+        vanish = not vanish
+        local playerPed = PlayerPedId() 
 
-    if vanish then
-        SetEntityVisible(playerPed, false, false)
-    elseif not vanish then
+        if vanish then
+            SetEntityVisible(playerPed, false, false)
+        elseif not vanish then
+            SetEntityVisible(playerPed, true, false)
+        end
+    else
         SetEntityVisible(playerPed, true, false)
     end
 end
