@@ -1,4 +1,4 @@
-Copyright (C) 2022 mx development / Lucca Tewes
+Copyright (C) 2022 - 2023 mx development / Lucca Tewes
 
 All rights reserved.
 Even if 'All rights reserved' is very clear :
