@@ -195,11 +195,10 @@ function toggleNoclip()
     noclip = not noclip
 
     if noclip then
-        CLNotify("Noclip on")
-    else
-        CLNotify("Noclip off")
-    end
-
+        ESX.ShowNotification('['..GetCurrentResourceName()..'] Noclip ~g~Enabled')
+    elseif not noclip then
+        ESX.ShowNotification('['..GetCurrentResourceName()..'] Noclip ~r~Disabled')
+        
     while noclip do
         Wait(1)
 
