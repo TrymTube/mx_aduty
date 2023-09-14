@@ -1,4 +1,4 @@
-ESX = exports['es_extended']:getSharedObject()
+local ESX = exports['es_extended']:getSharedObject()
 
 local aduty = false
 local noclip = false
@@ -198,38 +198,31 @@ function toggleNoclip()
         ESX.ShowNotification('['..GetCurrentResourceName()..'] Noclip ~g~Enabled')
     elseif not noclip then
         ESX.ShowNotification('['..GetCurrentResourceName()..'] Noclip ~r~Disabled')
-    end
-
+        
     while noclip do
         Wait(1)
 
         local playerPed = PlayerPedId()
-        local isInVehicle = IsPedInAnyVehicle(playerPed, 0)
+        local isInVehicle = IsPedInAnyVehicle(playerPed, false)
         local entity = nil
-        local x, y, z = nil
-        
+        local x, y, z
+
         if not isInVehicle then
             entity = playerPed
-            x, y, z = table.unpack(GetEntityCoords(playerPed, 2))
+            x, y, z = table.unpack(GetEntityCoords(playerPed, false))
         else
-            entity = GetVehiclePedIsIn(playerPed, 0)
-            x, y, z = table.unpack(GetEntityCoords(playerPed, 1))
-        end
-        
-        local dx, dy, dz = GetCamDirection()
-        
-        SetEntityVelocity(entity, 0.0001, 0.0001, 0.0001)
-        
-        if IsDisabledControlJustPressed(0, 21) then -- faster when shift pressed
-            oldSpeed = currentNoclipSpeed
-            currentNoclipSpeed = currentNoclipSpeed * Config.noclipShiftSpeed
-        end
-        if IsDisabledControlJustReleased(0, 21) then
-            currentNoclipSpeed = oldSpeed
+            entity = GetVehiclePedIsIn(playerPed, false)
+            x, y, z = table.unpack(GetEntityCoords(entity, false))
         end
 
-        if currentNoclipSpeed == nil then 
-            currentNoclipSpeed = Config.noclipSpeed
+        local dx, dy, dz = GetCamDirection()
+
+        SetEntityVelocity(entity, 0.0001, 0.0001, 0.0001)
+
+        local currentNoclipSpeed = Config.noclipSpeed  -- Standardgeschwindigkeit
+
+        if IsDisabledControlJustPressed(0, 21) then -- Schneller wenn Shift gedrückt
+            currentNoclipSpeed = currentNoclipSpeed * Config.noclipShiftSpeed
         end
 
         if IsDisabledControlPressed(0, 32) then
@@ -237,17 +230,17 @@ function toggleNoclip()
             y = y + currentNoclipSpeed * dy
             z = z + currentNoclipSpeed * dz
         end
-        
+
         if IsDisabledControlPressed(0, 269) then
             x = x - currentNoclipSpeed * dx
             y = y - currentNoclipSpeed * dy
             z = z - currentNoclipSpeed * dz
         end
-        
+
         if IsDisabledControlPressed(0, 22) then
             z = z + currentNoclipSpeed
         end
-        
+
         if IsDisabledControlPressed(0, 36) then
             z = z - currentNoclipSpeed
         end
